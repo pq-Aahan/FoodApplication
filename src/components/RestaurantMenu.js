@@ -19,7 +19,8 @@ const RestaurantMenu=()=> {
 //const{name,cuisines,costForTwoMessage}=resInfo?.cards[2]?.card?.card?.info; data.cards[4]..groupedcards.cardsgroupmap.regular.czrds[1]..card[0].ard.item.card.name
 
 const { name, cuisines, costForTwoMessage } = resInfo?.cards?.[2]?.card?.card?.info || {};
-const {itemCards} = resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[1]?.card?.card || [];
+const itemCards = resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[1]?.card?.card || [];
+const hasCarousel = itemCards?.carousel && itemCards.carousel.length > 0;
 
 if (!itemCards) {
   console.log("itemCards is undefined or null");
@@ -36,12 +37,19 @@ return !resInfo ? (
                 <>
                     <h1>{name}</h1>
                     <h3>{name}</h3>
-                    <p>{cuisines?.join(", ")}-{costForTwoMessage}</p>
+                    <p>{cuisines?.join(", ")} - {costForTwoMessage}</p>
                     <h2>MENU</h2>
                     <ul>
-                        {itemCards.map(item=><li key={item.card.info.id}>{item.card.info.name}-{"Rs."}{item.card.info.price/100|| item.card.info.defaultPrice/100}</li>)}
-                        
-
+                        {/* Conditionally render if carousel exists and has items */}
+                        {hasCarousel ? (
+                            itemCards.carousel.map((item, index) => (
+                                <li key={index}>
+                                    {item?.dish?.info?.name} - {" Rs."}{item?.dish?.info?.price / 100}
+                                </li>
+                            ))
+                        ) : (
+                            <li>No menu items available.</li> // Fallback message if no items are available
+                        )}
                     </ul>
                 </>
                     )}
