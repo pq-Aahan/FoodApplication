@@ -27,8 +27,8 @@ const onlineStatus=useOnlineStatus();
 if(onlineStatus===false){
   return(<h1>
     Looks like you are offline!! Please check your interney connection.
-  </h1>)
-}
+  </h1>);
+};
 
     let listOfRestaurants2=[
         {
@@ -91,15 +91,18 @@ if(onlineStatus===false){
 
     return listOfRestaurants.length===0?<Shimmer/>:(
         <div className="body">
-            <div className="filter">
-              <div  className="search">
-                <input type="text" className="search-box" value={searchText} onChange={(event)=>{setsearchText(event.target.value) }}></input>
-                <button onClick={()=>{ const filteredRes=listOfRestaurants.filter((res)=>res.info.name.toLowerCase().includes(searchText.toLowerCase())); setfilteredRestaurants(filteredRes);}}>Search</button>
+            <div className="filter flex">
+              <div  className="search m-4 p-4">
+                <input type="text" className="border border-solid border-black" value={searchText} onChange={(event)=>{setsearchText(event.target.value) }}></input>
+                <button className="px-4 py-1 bg-green-100 m-4 rounded-lg" onClick={()=>{ const filteredRes=listOfRestaurants.filter((res)=>res.info.name.toLowerCase().includes(searchText.toLowerCase())); setfilteredRestaurants(filteredRes);}}>Search</button>
               </div>
-                <button className="filter-btn" onClick={()=>{const filteredlist=listOfRestaurants.filter((res)=>res.info.avgRating>4);
+              <div className="search m-4 p-4 flex items-center">
+              <button className="px-4 py-1 bg-gray-100 rounded-lg" onClick={()=>{const filteredlist=listOfRestaurants.filter((res)=>res.info.avgRating>4);
                     setlistOfRestaurants(filteredlist); }}>Top Rated Restaurants</button>
+              </div>
+                
             </div>
-            <div className="res-container">
+            <div className="res-container flex flex-wrap">
             {filteredRestaurants.map((restaurant)=>(
               <Link key={restaurant.info.id} to={"/restaurants/"+restaurant.info.id}><RestaurantCard resData={restaurant.info}/></Link>))}
             </div>
