@@ -3,6 +3,7 @@ import Shimmer from './Shimmer';
 import { useParams } from 'react-router-dom';
 import { MENU_API } from '../utils/constants';
 import useRestaurantMenu from '../utils/useRestaurantMenu';
+import RestaurantCategory from './RestaurantCategory';
 
 const RestaurantMenu=()=> {
    // const[resInfo,setResinfo]=useState([]);
@@ -23,7 +24,8 @@ const RestaurantMenu=()=> {
 const { name, cuisines, costForTwoMessage } = resInfo?.cards?.[2]?.card?.card?.info || {};
 const itemCards = resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[1]?.card?.card || [];
 const hasCarousel = itemCards?.carousel && itemCards.carousel.length > 0;
-
+const categories=resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(c=>c.card?.card?.["@type"]==="type.googleapis.com/swiggy.presentation.food.v2.ItemCategory")||{};
+console.log("cat",categories);
 if (!itemCards) {
   console.log("itemCards is undefined or null");
 } else {
@@ -34,15 +36,12 @@ if (!itemCards) {
 return !resInfo ? (
     <Shimmer />
 ) : (
-    <div className="menu">
+    <div className="text-center">
             {resInfo?.cards?.length > 2 && (
                 <>
-                    <h1>{name}</h1>
-                    <h3>{name}</h3>
-                    <p>{cuisines?.join(", ")} - {costForTwoMessage}</p>
-                    <h2>MENU</h2>
-                    <ul>
-                        {/* Conditionally render if carousel exists and has items */}
+                    <h1 className="font-bold my-6 text-2xl">{name}</h1>
+                    <p className="font-bold text-lg">{cuisines?.join(", ")} - {costForTwoMessage}</p>
+                    {/* <ul>
                         {hasCarousel ? (
                             itemCards.carousel.map((item, index) => (
                                 <li key={index}>
@@ -50,9 +49,10 @@ return !resInfo ? (
                                 </li>
                             ))
                         ) : (
-                            <li>No menu items available.</li> // Fallback message if no items are available
+                            <li>No menu items available.</li> 
                         )}
-                    </ul>
+                    </ul> */}
+                    {categories.map((category)=><RestaurantCategory data={category?.card.card}/>)}
                 </>
                     )}
         </div> 
