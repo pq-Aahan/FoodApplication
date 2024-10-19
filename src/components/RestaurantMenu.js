@@ -9,6 +9,7 @@ const RestaurantMenu=()=> {
    // const[resInfo,setResinfo]=useState([]);
     const{resId}=useParams();
     const resInfo=useRestaurantMenu(resId);
+    const [showindex,setShowIndex]=useState(0);
    // useEffect (()=>{fetchMenu();},[]);
 
     /* const fetchMenu= async()=>{
@@ -52,7 +53,7 @@ return !resInfo ? (
                             <li>No menu items available.</li> 
                         )}
                     </ul> */}
-                    {categories.map((category)=><RestaurantCategory data={category?.card.card}/>)}
+                    {categories.map((category,index)=><RestaurantCategory kay={category?.card?.card?.title} data={category?.card?.card} showItems={index===showindex?true:false}setShowIndex={()=>setShowIndex(index)}/>)}
                 </>
                     )}
         </div> 
